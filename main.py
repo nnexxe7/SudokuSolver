@@ -9,6 +9,9 @@ pygame.display.set_caption('Sudoku Solver')
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
+LIGHT_GRAY = (200, 200, 200)
+
+font = pygame.font.Font(None, 36)
 
 board = [[0 for _ in range(9)] for _ in range(9)]
 
@@ -58,6 +61,14 @@ def draw_grid():
         pygame.draw.line(screen, BLACK, (i * screen_size / 9, 0), (i * screen_size / 9, screen_size), thickness)
         pygame.draw.line(screen, BLACK, (0, i * screen_size / 9), (screen_size, i * screen_size / 9), thickness)
 
+def draw_solve_button():
+    solve_button = pygame.Rect((screen_size / 2 - 50, screen_size + 20, 100, 50))
+    pygame.draw.rect(screen, LIGHT_GRAY, solve_button)
+    text = font.render('Solve', True, BLACK)
+    screen.blit(text, (solve_button.x + (solve_button.width - text.get_width()) / 2,
+                       solve_button.y + (solve_button.height - text.get_height()) / 2))
+    return solve_button
+
 
 def main():
     running = True
@@ -68,6 +79,7 @@ def main():
 
         screen.fill(WHITE)
         draw_grid()
+        draw_solve_button()
         pygame.display.flip()
 
     pygame.quit()
