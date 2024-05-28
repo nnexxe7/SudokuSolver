@@ -78,6 +78,14 @@ def draw_selection():
         pygame.draw.rect(screen, BLUE, (
             selected[1] * screen_size / 9, selected[0] * screen_size / 9, screen_size / 9, screen_size / 9), 3)
 
+def draw_numbers():
+    for i in range(9):
+        for j in range(9):
+            if board[i][j] != 0:
+                num_text = font.render(str(board[i][j]), True, BLACK)
+                num_text_rect = num_text.get_rect(
+                    center=(j * screen_size / 9 + screen_size / 18, i * screen_size / 9 + screen_size / 18))
+                screen.blit(num_text, num_text_rect)
 
 def main():
     global selected
@@ -93,9 +101,15 @@ def main():
                     solve_sudoku(board)
                 else:
                     selected = (int(y // (screen_size / 9)), int(x // (screen_size / 9)))
-
+            elif event.type == pygame.KEYDOWN:
+                if selected and event.unicode.isnumeric():
+                    num = int(event.unicode)
+                    if is_valid(board, selected[0], selected[1], num):
+                        board[selected[0]][selected[1]] = num
+                        draw_numbers()
         screen.fill(WHITE)
         draw_grid()
+        draw_numbers()
         draw_selection()
         draw_solve_button()
         pygame.display.flip()
