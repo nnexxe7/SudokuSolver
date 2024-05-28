@@ -10,10 +10,13 @@ pygame.display.set_caption('Sudoku Solver')
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 LIGHT_GRAY = (200, 200, 200)
+BLUE = (0, 0, 255)
 
 font = pygame.font.Font(None, 36)
 
 board = [[0 for _ in range(9)] for _ in range(9)]
+
+selected = None
 
 def is_valid(board, row, col, num):
     for x in range(9):
@@ -70,15 +73,30 @@ def draw_solve_button():
     return solve_button
 
 
+def draw_selection():
+    if selected:
+        pygame.draw.rect(screen, BLUE, (
+            selected[1] * screen_size / 9, selected[0] * screen_size / 9, screen_size / 9, screen_size / 9), 3)
+
+
 def main():
+    global selected
     running = True
+    solve_button = draw_solve_button()
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                x, y = event.pos
+                if solve_button.collidepoint(x, y):
+                    solve_sudoku(board)
+                else:
+                    selected = (int(y // (screen_size / 9)), int(x // (screen_size / 9)))
 
         screen.fill(WHITE)
         draw_grid()
+        draw_selection()
         draw_solve_button()
         pygame.display.flip()
 
