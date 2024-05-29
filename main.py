@@ -75,8 +75,9 @@ def draw_solve_button():
 
 def draw_selection():
     if selected:
-        pygame.draw.rect(screen, BLUE, (
-            selected[1] * screen_size / 9, selected[0] * screen_size / 9, screen_size / 9, screen_size / 9), 3)
+        if 0 <= selected[0] < 9 and 0 <= selected[1] < 9:
+            pygame.draw.rect(screen, BLUE, (
+                selected[1] * screen_size / 9, selected[0] * screen_size / 9, screen_size / 9, screen_size / 9), 3)
 
 def draw_numbers():
     for i in range(9):
