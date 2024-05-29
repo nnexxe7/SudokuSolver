@@ -4,7 +4,7 @@ import sys
 pygame.init()
 
 screen_size = 600
-screen = pygame.display.set_mode((screen_size, screen_size + 100))
+screen = pygame.display.set_mode((screen_size, screen_size + 150))
 pygame.display.set_caption('Sudoku Solver')
 
 BLACK = (0, 0, 0)
@@ -88,10 +88,24 @@ def draw_numbers():
                     center=(j * screen_size / 9 + screen_size / 18, i * screen_size / 9 + screen_size / 18))
                 screen.blit(num_text, num_text_rect)
 
+def reset_board(board):
+    for i in range(9):
+        for j in range(9):
+            board[i][j] = 0
+
+def draw_reset_button():
+    reset_button = pygame.Rect((screen_size / 2 - 50, screen_size + 90, 100, 50))
+    pygame.draw.rect(screen, LIGHT_GRAY, reset_button)
+    text = font.render('Reset', True, BLACK)
+    screen.blit(text, (reset_button.x + (reset_button.width - text.get_width()) / 2,
+                       reset_button.y + (reset_button.height - text.get_height()) / 2))
+    return reset_button
+
 def main():
     global selected
     running = True
     solve_button = draw_solve_button()
+    reset_button = draw_reset_button()
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -100,6 +114,8 @@ def main():
                 x, y = event.pos
                 if solve_button.collidepoint(x, y):
                     solve_sudoku(board)
+                elif reset_button.collidepoint(x, y):  # Add this block
+                    reset_board(board)
                 else:
                     selected = (int(y // (screen_size / 9)), int(x // (screen_size / 9)))
             elif event.type == pygame.KEYDOWN:
@@ -113,6 +129,7 @@ def main():
         draw_numbers()
         draw_selection()
         draw_solve_button()
+        draw_reset_button()
         pygame.display.flip()
 
     pygame.quit()
