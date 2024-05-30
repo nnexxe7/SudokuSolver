@@ -114,16 +114,19 @@ def main():
                 x, y = event.pos
                 if solve_button.collidepoint(x, y):
                     solve_sudoku(board)
-                elif reset_button.collidepoint(x, y):  # Add this block
+                elif reset_button.collidepoint(x, y):
                     reset_board(board)
                 else:
                     selected = (int(y // (screen_size / 9)), int(x // (screen_size / 9)))
             elif event.type == pygame.KEYDOWN:
-                if selected and event.unicode.isnumeric():
-                    num = int(event.unicode)
-                    if is_valid(board, selected[0], selected[1], num):
-                        board[selected[0]][selected[1]] = num
-                        draw_numbers()
+                if selected:
+                    if event.key == pygame.K_BACKSPACE:
+                        board[selected[0]][selected[1]] = 0
+                    elif selected and event.unicode.isnumeric():
+                        num = int(event.unicode)
+                        if is_valid(board, selected[0], selected[1], num):
+                            board[selected[0]][selected[1]] = num
+                            draw_numbers()
         screen.fill(WHITE)
         draw_grid()
         draw_numbers()
