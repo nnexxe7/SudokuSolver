@@ -127,6 +127,18 @@ def main():
                         if is_valid(board, selected[0], selected[1], num):
                             board[selected[0]][selected[1]] = num
                             draw_numbers()
+                    elif event.key == pygame.K_UP:
+                        if selected[0] > 0:
+                            selected = (selected[0] - 1, selected[1])
+                    elif event.key == pygame.K_DOWN:
+                        if selected[0] < 8:
+                            selected = (selected[0] + 1, selected[1])
+                    elif event.key == pygame.K_LEFT:
+                        if selected[1] > 0:
+                            selected = (selected[0], selected[1] - 1)
+                    elif event.key == pygame.K_RIGHT:
+                        if selected[1] < 8:
+                            selected = (selected[0], selected[1] + 1)
         screen.fill(WHITE)
         draw_grid()
         draw_numbers()
